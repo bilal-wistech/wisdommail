@@ -1,0 +1,449 @@
+<?php
+
+namespace Acelle\Console\Commands;
+
+use Request;
+use Carbon\Carbon;
+use Acelle\Model\Field;
+use Acelle\Model\MailList;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
+class SyncMailLists extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'sync:maillists';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Sync mail lists and subscribers with external API';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        // $apiResponse = Http::get('http://bccd.test/api/list-names');
+        $apiResponse = Http::get('https://britishchamberdubai.com/api/list-names');
+        $apiData = json_decode($apiResponse->body(), true);
+        //dd($apiData['Events List']);
+        Log::info('API Data Retrieved');
+        $upsertData = [];
+
+        // Check if the MailList table is empty
+        if (MailList::count() == 0) {
+            foreach ($apiData['lists'] as $data) {
+                // Prepare data for MailList insertion
+                $mailListData = [
+                    'name' => $data['title'],
+                    'uid' => (string) \Illuminate\Support\Str::uuid(),
+                    'customer_id' => 1,
+                    'contact_id' => $this->get_contact($data),
+                    'subscribe_confirmation' => 0,
+                    'unsubscribe_notification' => 0,
+                    'send_welcome_email' => 0,
+                    'from_email' => env('MAIL_FROM_ADDRESS'),
+                    'from_name' => 'BILAL',
+                ];
+                // Insert MailList and get the inserted ID
+                $mailListId = MailList::insertGetId($mailListData);
+            }
+        } else {
+
+            foreach ($apiData['lists'] as $data) {
+                $existingRecord = MailList::where('name', $data['title'])->first();
+
+                if ($existingRecord) {
+                    $existingRecord->update([
+                        'name' => $data['title']
+                    ]);
+                } else {
+                    $mailListId = MailList::insertGetId([
+                        'name' => $data['title'],
+                        'uid' => (string) \Illuminate\Support\Str::uuid(),
+                        'customer_id' => 1,
+                        'contact_id' => $this->get_contact($data),
+                        'subscribe_confirmation' => 0,
+                        'unsubscribe_notification' => 0,
+                        'send_welcome_email' => 0,
+                        'from_email' => env('MAIL_FROM_ADDRESS'),
+                        'from_name' => 'BILAL',
+                    ]);
+                }
+            }
+        }
+
+        $selected_mail_List = DB::table('mail_lists')->get();
+        // DB::table('subscribers')->delete();
+        foreach ($selected_mail_List as $mail_list) {
+            switch ($mail_list->name) {
+                case 'Prospect List':
+                    // Check if 'prospect_list' exists and is an array
+                    if (isset($apiData['prospect_list']) && is_array($apiData['prospect_list'])) {
+                        foreach ($apiData['prospect_list'] as $prospectData) {
+                            // Ensure $prospectData is an array and contains an 'email' key
+                            if (isset($prospectData['email'])) {
+                                $email = $prospectData['email'];
+
+                                // Validate email: ensure it's not numeric-only or name-only
+                                if (
+                                    filter_var($email, FILTER_VALIDATE_EMAIL) &&
+                                    !ctype_digit($email) && // Not only numbers
+                                    preg_match('/@/', $email) // Contains "@" for email structure
+                                ) {
+                                    // Check if the email already exists for this mail_list_id
+                                    $existingProspect = DB::table('subscribers')
+                                        ->where('prospect_id', $prospectData['id'])
+                                        ->where('mail_list_id', $mail_list->id)
+                                        ->first();
+                                    if (!$existingProspect) {
+                                        // Insert new email if it doesn't exist
+                                        DB::table('subscribers')->insert([
+                                            'uid' => (string) \Illuminate\Support\Str::uuid(),
+                                            'email' => $email,
+                                            'mail_list_id' => $mail_list->id,
+                                            'ip' => Request::ip(),
+                                            'status' => 'subscribed',
+                                            'from' => 'added',
+                                            'prospect_id' => $prospectData['id'],
+                                            'user_email' => $email,
+                                            'name' => $prospectData['full_name'],
+                                            'created_at' => Carbon::now(),
+                                            'updated_at' => Carbon::now(),
+                                            'propspect_Reference_number' => $prospectData['reference_no'],
+                                            'Company_name' => $prospectData['company_name'],
+                                            'phone' => $prospectData['phone'],
+                                            'jobrole' => $prospectData['designation'],
+                                            'prospect_vat_number' => $prospectData['vat_number'],
+                                            'prospect_address' => $prospectData['address'],
+                                            'xero_contact_id' => $prospectData['xero_contact_id'],
+                                        ]);
+                                    } else {
+                                        DB::table('subscribers')
+                                            ->where('prospect_id', $prospectData['id'])
+                                            ->where('mail_list_id', $mail_list->id)
+                                            ->update([
+                                                'email' => $email,
+                                                'mail_list_id' => $mail_list->id,
+                                                'ip' => Request::ip(),
+                                                'status' => 'subscribed',
+                                                'from' => 'added',
+                                                'prospect_id' => $prospectData['id'],
+                                                'user_email' => $email,
+                                                'name' => $prospectData['full_name'],
+                                                'created_at' => Carbon::now(),
+                                                'updated_at' => Carbon::now(),
+                                                'propspect_Reference_number' => $prospectData['reference_no'],
+                                                'Company_name' => $prospectData['company_name'],
+                                                'phone' => $prospectData['phone'],
+                                                'jobrole' => $prospectData['designation'],
+                                                'prospect_vat_number' => $prospectData['vat_number'],
+                                                'prospect_address' => $prospectData['address'],
+                                                'xero_contact_id' => $prospectData['xero_contact_id'],
+                                            ]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case 'News Letter Subscription':
+                    // Check if 'news_letter_subscription' exists and is an array
+                    if (isset($apiData['news_letter_subscription'][0]) && is_array($apiData['news_letter_subscription'][0])) {
+                        foreach ($apiData['news_letter_subscription'][0] as $newsLetterSubscriptionData) {
+                            // Ensure $newsLetterSubscriptionData is an array and contains an 'email' key
+                            if (isset($newsLetterSubscriptionData['email'])) {
+                                $email = $newsLetterSubscriptionData['email'];
+
+                                // Validate email: ensure it's not numeric-only or name-only
+                                if (
+                                    filter_var($email, FILTER_VALIDATE_EMAIL) &&
+                                    !ctype_digit($email) && // Not only numbers
+                                    preg_match('/@/', $email) // Contains "@" for email structure
+                                ) {
+                                    // Check if the email already exists for this mail_list_id
+                                    $existingNewsLetterSubscription = DB::table('subscribers')
+                                        ->where('news_letter_subscription_id', $newsLetterSubscriptionData['id'])
+                                        ->where('mail_list_id', $mail_list->id)
+                                        ->first();
+
+                                    if (!$existingNewsLetterSubscription) {
+                                        // Insert new email if it doesn't exist
+                                        DB::table('subscribers')->insert([
+                                            'uid' => (string) \Illuminate\Support\Str::uuid(),
+                                            'email' => $email,
+                                            'mail_list_id' => $mail_list->id,
+                                            'ip' => Request::ip(),
+                                            'status' => 'subscribed',
+                                            'from' => 'added',
+                                            'news_letter_subscription_id' => $newsLetterSubscriptionData['id'],
+                                            'user_email' => $email,
+                                            'name' => trim($newsLetterSubscriptionData['first_name'] . ' ' . $newsLetterSubscriptionData['last_name']),
+                                            'phone' => $newsLetterSubscriptionData['mobile'],
+                                            'created_at' => Carbon::now(),
+                                            'updated_at' => Carbon::now(),
+                                        ]);
+                                    } else {
+                                        DB::table('subscribers')
+                                            ->where('news_letter_subscription_id', $newsLetterSubscriptionData['id'])
+                                            ->where('mail_list_id', $mail_list->id)
+                                            ->update([
+                                                'email' => $email,
+                                                'mail_list_id' => $mail_list->id,
+                                                'ip' => Request::ip(),
+                                                'status' => 'subscribed',
+                                                'from' => 'added',
+                                                'news_letter_subscription_id' => $newsLetterSubscriptionData['id'],
+                                                'user_email' => $email,
+                                                'name' => trim($newsLetterSubscriptionData['first_name'] . ' ' . $newsLetterSubscriptionData['last_name']),
+                                                'phone' => $newsLetterSubscriptionData['mobile'],
+                                                'created_at' => Carbon::now(),
+                                                'updated_at' => Carbon::now(),
+                                            ]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case 'All Members':
+                    // Check if 'all_members_list' exists and is an array
+                    if (isset($apiData['all_members_list'][0]) && is_array($apiData['all_members_list'][0])) {
+                        foreach ($apiData['all_members_list'][0] as $memberData) {
+                            // Ensure $memberData is an array and contains an 'email' key
+                            if (isset($memberData['email'])) {
+                                $email = $memberData['email'];
+
+                                // Validate email: ensure it's not numeric-only or name-only
+                                if (
+                                    filter_var($email, FILTER_VALIDATE_EMAIL) &&
+                                    !ctype_digit($email) && // Not only numbers
+                                    preg_match('/@/', $email) // Contains "@" for email structure
+                                ) {
+                                    // Check if the email already exists for this mail_list_id
+                                    $existingMember = DB::table('subscribers')
+                                        ->where('member_id', $memberData['id'])
+                                        ->where('mail_list_id', $mail_list->id)
+                                        ->first();
+
+                                    if (!$existingMember) {
+                                        // Insert new email if it doesn't exist
+                                        DB::table('subscribers')->insert([
+                                            'uid' => (string) \Illuminate\Support\Str::uuid(),
+                                            'email' => $email,
+                                            'mail_list_id' => $mail_list->id,
+                                            'ip' => Request::ip(),
+                                            'status' => 'subscribed',
+                                            'from' => 'added',
+                                            'member_id' => $memberData['id'],
+                                            'user_email' => $email,
+                                            'name' => $memberData['name'],
+                                            'member_title' => $memberData['title'] ?? '',
+                                            'created_at' => Carbon::now(),
+                                            'updated_at' => Carbon::now(),
+                                            'Profile_photo' => $memberData['image'],
+                                            'Reference_number' => $memberData['reference_no'],
+                                            'Company_name' => $memberData['company_name'],
+                                            'phone' => $memberData['phone'],
+                                            'gender' => $memberData['gender'],
+                                            'bill_to_name' => $memberData['bill_to_name'],
+                                            'bill_to_company' => $memberData['bill_to_company'],
+                                            'bill_to_address' => $memberData['bill_to_address'],
+                                            'subscription_start_date' => $memberData['subscription_start_date'],
+                                            'subscription_end_date' => $memberData['subscription_end_date'],
+                                            'jobrole' => $memberData['jobrole_title'],
+                                            'activated' => $memberData['activated'],
+                                            'is_active' => $memberData['is_active'],
+                                            'created_by' => $memberData['created_by_name'],
+                                            'date_of_birth' => $memberData['date_of_birth'],
+                                            'vat_number' => $memberData['vat_number'],
+                                            'sector__industries' => $memberData['sector__industries'],
+                                            'account_type' => $memberData['account_type'],
+                                        ]);
+                                    } else {
+                                        DB::table('subscribers')
+                                            ->where('member_id', $memberData['id'])
+                                            ->where('mail_list_id', $mail_list->id)
+                                            ->update([
+                                                'email' => $email,
+                                                'mail_list_id' => $mail_list->id,
+                                                'ip' => Request::ip(),
+                                                'status' => 'subscribed',
+                                                'from' => 'added',
+                                                'member_id' => $memberData['id'],
+                                                'user_email' => $email,
+                                                'name' => $memberData['name'],
+                                                'member_title' => $memberData['title'] ?? '',
+                                                'created_at' => Carbon::now(),
+                                                'updated_at' => Carbon::now(),
+                                                'Profile_photo' => $memberData['image'],
+                                                'Reference_number' => $memberData['reference_no'],
+                                                'Company_name' => $memberData['company_name'],
+                                                'phone' => $memberData['phone'],
+                                                'gender' => $memberData['gender'],
+                                                'bill_to_name' => $memberData['bill_to_name'],
+                                                'bill_to_company' => $memberData['bill_to_company'],
+                                                'bill_to_address' => $memberData['bill_to_address'],
+                                                'subscription_start_date' => $memberData['subscription_start_date'],
+                                                'subscription_end_date' => $memberData['subscription_end_date'],
+                                                'jobrole' => $memberData['jobrole_title'],
+                                                'activated' => $memberData['activated'],
+                                                'is_active' => $memberData['is_active'],
+                                                'created_by' => $memberData['created_by_name'],
+                                                'date_of_birth' => $memberData['date_of_birth'],
+                                                'vat_number' => $memberData['vat_number'],
+                                                'sector__industries' => $memberData['sector__industries'],
+                                                'account_type' => $memberData['account_type'],
+                                            ]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case 'Events List':
+                    // Check if 'event_list' exists and is an array
+                    if (isset($apiData['event_list'][0]) && is_array($apiData['event_list'][0])) {
+                        foreach ($apiData['event_list'][0] as $eventData) {
+                            // Ensure $eventData is an array and contains an 'email' key
+                            if (isset($eventData['email'])) {
+                                $email = $eventData['email'];
+
+                                // Validate email: ensure it's not numeric-only or name-only
+                                if (
+                                    filter_var($email, FILTER_VALIDATE_EMAIL) &&
+                                    !ctype_digit($email) && // Not only numbers
+                                    preg_match('/@/', $email) // Contains "@" for email structure
+                                ) {
+                                    // Check if the email already exists for this mail_list_id
+                                    $existingEmail = DB::table('subscribers')
+                                        ->where('event_id', $eventData['event_id'])
+                                        ->where('mail_list_id', $mail_list->id)
+                                        ->first();
+
+                                    if (!$existingEmail) {
+                                        // Insert new email if it doesn't exist
+                                        DB::table('subscribers')->insert([
+                                            'uid' => (string) \Illuminate\Support\Str::uuid(),
+                                            'email' => $email,
+                                            'mail_list_id' => $mail_list->id,
+                                            'ip' => Request::ip(),
+                                            'status' => 'subscribed',
+                                            'from' => 'added',
+                                            'user_email' => $email,
+                                            'name' => $eventData['name'],
+                                            'created_at' => Carbon::now(),
+                                            'updated_at' => Carbon::now(),
+                                            'event_user_id' => $eventData['user_id'],
+                                            'event_id' => $eventData['event_id'],
+                                            'event_user_type' => $eventData['user_type'],
+                                            'event_member_going' => $eventData['member_going'],
+                                            'event_attended' => $eventData['attended'],
+                                            'Reference_number' => $eventData['reference_no'],
+                                            'Company_name' => $eventData['company_name'],
+                                            'event_startDate' => $eventData['event_startDate'],
+                                            'event_title' => $eventData['title'],
+                                            'jobrole' => $eventData['job'],
+                                            'event_status' => $eventData['status'],
+                                            'event_primary_payer' => $eventData['primary_payer'],
+                                            'sector__industries' => $eventData['sector__industries'],
+                                            'p_reference_number' => $eventData['p_reference_number'],
+                                            'payment_status' => $eventData['payment_status'],
+                                            'fee' => $eventData['fee'],
+                                            'tag_title' => $eventData['tag_title'] ?? '',
+                                        ]);
+                                    } else {
+                                        DB::table('subscribers')
+                                            ->where('event_id', $eventData['event_id'])
+                                            ->where('mail_list_id', $mail_list->id)
+                                            ->update([
+                                                'email' => $email,
+                                                'mail_list_id' => $mail_list->id,
+                                                'ip' => Request::ip(),
+                                                'status' => 'subscribed',
+                                                'from' => 'added',
+                                                'user_email' => $email,
+                                                'name' => $eventData['name'],
+                                                'created_at' => Carbon::now(),
+                                                'updated_at' => Carbon::now(),
+                                                'event_user_id' => $eventData['user_id'],
+                                                'event_id' => $eventData['event_id'],
+                                                'event_user_type' => $eventData['user_type'],
+                                                'event_member_going' => $eventData['member_going'],
+                                                'event_attended' => $eventData['attended'],
+                                                'Reference_number' => $eventData['reference_no'],
+                                                'Company_name' => $eventData['company_name'],
+                                                'event_startDate' => $eventData['event_startDate'],
+                                                'event_title' => $eventData['title'],
+                                                'jobrole' => $eventData['job'],
+                                                'event_status' => $eventData['status'],
+                                                'event_primary_payer' => $eventData['primary_payer'],
+                                                'sector__industries' => $eventData['sector__industries'],
+                                                'p_reference_number' => $eventData['p_reference_number'],
+                                                'payment_status' => $eventData['payment_status'],
+                                                'fee' => $eventData['fee'],
+                                                'tag_title' => $eventData['tag_title'] ?? '',
+                                            ]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+    private function get_contact($data)
+    {
+        $contactData = [
+            "company" => $data['company'] ?? "Stark and Barron Co",
+            "phone" => $data['phone'] ?? "+923481234567",
+            "email" => auth()->user()->email ?? "sobodip@mailinator.com",
+            "zip" => $data['zip'] ?? "58147",
+            "state" => $data['state'] ?? "Riverside Province",
+            "city" => $data['city'] ?? "Sialkot",
+            "address_1" => $data['address_1'] ?? "Address 1",
+            "address_2" => $data['address_2'] ?? "Address 2",
+            "country_id" => $data['country_id'] ?? "154",
+            "url" => $data['url'] ?? ""
+        ];
+
+        // Check if the contact exists by email
+        $contact = \Acelle\Model\Contact::where('email', $contactData['email'])->first();
+
+        if ($contact) {
+            // Update existing contact
+            $contact->update($contactData);
+        } else {
+            // Create a new contact
+            $contact = \Acelle\Model\Contact::create($contactData);
+        }
+
+        // Return the contact's ID
+        return $contact->id;
+    }
+}

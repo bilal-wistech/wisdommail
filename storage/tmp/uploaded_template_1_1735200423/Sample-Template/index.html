@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      @font-face {
+        font-family: Helvetica;
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+        src: url("./font/Helvetica.woff2") format("woff2"),
+          url("./font/Helvetica.woff") format("woff"),
+          url("./font/Helvetica.ttf") format("truetype");
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      body {
+        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+      }
+      .container {
+        max-width: 690px;
+      }
+      .highlights-main .highlight-content h2 {
+        color: #d0103a;
+        font-size: 23px;
+        font-weight: 700;
+      }
+      .highlights-main .highlight-content {
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        width: 75%;
+      }
+      .highlights-main .highlight-content p {
+        line-height: 120%;
+      }
+      .highlights-main .highlight-content p strong a {
+        color: #d0103a;
+      }
+      .highlights-main .highlight-content .find-out-more span {
+        background-color: #d0103a;
+      }
+      .highlights-main .highlight-image {
+        width: 25%;
+      }
+      .highlight-heading {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+      }
+      .highlight-heading h2 {
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: uppercase;
+        color: #fff;
+        margin: 0;
+      }
+      footer {
+        background-color: #000;
+        padding-top: 20px;
+      }
+      footer .footer-left ul {
+        padding-bottom: 10px;
+      }
+      footer .footer-left {
+        padding-left: 20px;
+      }
+      footer .footer-left p {
+        font-size: 13px;
+        font-weight: 400;
+        color: #fff;
+        line-height: 120%;
+      }
+      footer .footer-left a {
+        font-size: 13px;
+      }
+      footer .footer-left ul {
+        padding-left: 0;
+      }
+      footer .footer-left ul li {
+        list-style: none;
+      }
+      footer .footer-left ul,
+      footer .footer-left p {
+        margin: 0;
+      }
+      .weekly_update .first {
+        background-color: #d0103a;
+        padding-bottom: 5px;
+        padding-top: 5px;
+      }
+      .weekly_update .first h1 {
+        margin: 0;
+        color: #fff;
+        font-size: 29px;
+        font-weight: 400;
+        text-align: center;
+        padding: 10px;
+      }
+      .weekly_update .first h2 {
+        margin: 0;
+        padding: 0 20px 10px 20px;
+        width: 100%;
+        color: #fff;
+        font-size: 31px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .weekly_update .second {
+        max-width: 690px;
+      }
+      .weekly_update .second img {
+        width: 100%;
+      }
+      .weekly_update .third {
+        padding: 5px 0;
+        margin: 0;
+        background-color: #000;
+      }
+      .weekly_update .third p {
+        margin: 0;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .weekly_update .fourth {
+        background-color: #d0103a;
+        padding: 5px 0;
+      }
+      .weekly_update .fourth h2 {
+        padding: 5px 20px 0 20px;
+        text-align: center;
+        color: #fff;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        margin: 0;
+      }
+      .weekly_update .fourth p {
+        margin: 0;
+        padding: 5px 10px;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 400;
+        text-align: center;
+      }
+      .global_britain .head {
+        background-color: #f7a321;
+        padding: 5px 0;
+        margin: 0;
+      }
+      .global_britain .head h2 {
+        margin: 0;
+        padding: 5px;
+        color: #fff;
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .global_britain .heading {
+        padding: 20px 20px 10px;
+      }
+      .global_britain .heading p {
+        color: #f7a321;
+        font-size: 23px;
+        font-weight: 700;
+        margin: 0;
+        text-align: left;
+      }
+      .global_britain .points {
+        padding: 5px 10px 10px;
+      }
+      .global_britain .points ul {
+        color: #000;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: left;
+        line-height: 120%;
+      }
+      .global_britain .points ul li {
+        margin-bottom: 14px;
+      }
+      .global_britain .points ul li span {
+        font-weight: bold;
+      }
+      .global_britain .points ul li a {
+        text-decoration: none;
+        color: #f7a321;
+      }
+      .ucas_project h2 {
+        margin: 0;
+        color: #0ba1db;
+        padding: 10px 15px 5px;
+        font-size: 23px;
+        font-weight: 700;
+        text-align: left;
+      }
+      .ucas_project .content {
+        margin: 0;
+        padding: 5px 15px;
+        line-height: 120%;
+      }
+      .ucas_project .content .text {
+        font-size: 14px;
+        font-weight: bold;
+        text-align: left;
+      }
+      .ucas_project .content p {
+        margin: 0;
+        font-size: 14px;
+        color: #000;
+        margin-bottom: 12px;
+        line-height: 120%;
+      }
+      .ucas_project a {
+        margin: 5px 10px 10px;
+        background-color: #3caeef;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        width: fit-content;
+        border-radius: 10px;
+        display: block;
+      }
+      .find_more h2 {
+        font-size: 23px;
+        margin: 0;
+        font-weight: bold;
+        color: #8766ab;
+        padding: 10px 15px 5px;
+      }
+      .find_more > p {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0;
+        padding: 5px 15px;
+        line-height: 120%;
+      }
+      .find_more ul {
+        font-size: 14px;
+        padding: 10px;
+        margin: 0;
+      }
+      .find_more ul li {
+        line-height: 120%;
+        margin: 0 0 6px 40px;
+      }
+      .find_more .find_content p {
+        font-size: 14px;
+        margin: 0;
+        font-weight: 400;
+        margin-bottom: 15px;
+        line-height: 120%;
+      }
+      .find_more .find_content {
+        padding: 5px 15px 10px;
+      }
+      .find_more .find_content h3 {
+        font-size: 14px;
+        font-weight: bold;
+        text-decoration: underline;
+        margin: 0;
+      }
+      .upcoming .up_heading {
+        padding: 5px 0px;
+        background-color: #d0103a;
+      }
+      .upcoming h2 {
+        margin: 0;
+        color: white;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        padding: 5px;
+      }
+      .upcoming_content {
+        padding-bottom: 10px;
+        background-color: #fdeae7;
+      }
+      .upcoming_content h3 {
+        padding: 10px 20px 5px;
+        font-size: 23px;
+        line-height: 120%;
+        font-weight: bold;
+        color: #d0103a;
+      }
+      .upcoming_content ul {
+        padding: 0 0 0 40px;
+      }
+      .upcoming_content ul li {
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 120%;
+      }
+      .upcoming .upcoming_content a {
+        text-decoration: none;
+        color: #d0103a;
+      }
+      .upcoming .upcoming_content .up_text {
+        padding: 5px 15px;
+      }
+      .upcoming .upcoming_content .up_text p {
+        font-size: 14px;
+
+        line-height: 120%;
+      }
+      .call_to_action {
+        background-color: #d0103a;
+        border-radius: 11px;
+        width: 40%;
+        font-size: 14px;
+        padding: 5px;
+        margin-left: 10px;
+        text-align: center;
+      }
+      .upcoming .upcoming_content .call_to_action a {
+        color: #fff;
+      }
+      .call_to_action a {
+        text-decoration: none;
+        line-height: 28px;
+        color: #fff;
+        font-weight: bold;
+      }
+      .customs {
+        padding-bottom: 10px;
+      }
+      .customs h3 {
+        font-size: 23px;
+        font-weight: bold;
+        color: #d0103a;
+        padding: 10px 15px 5px;
+        margin: 0;
+      }
+      .customs .customs_content {
+        padding: 5px 15px;
+      }
+      .customs .customs_content p {
+        font-size: 14px;
+        line-height: 120%;
+      }
+      .customs ul li {
+        font-size: 14px;
+        line-height: 120%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="weekly_update">
+        <div class="first">
+          <h1>British Chambers of Commerce</h1>
+          <h2>Weekly Update</h2>
+        </div>
+        <div class="second">
+          <img src="./images/banner.jpg" alt="" />
+        </div>
+        <div class="third"><p>27 SEPTEMBER 2024</p></div>
+        <div class="fourth">
+          <h2>THIS WEEK</h2>
+          <p>Your highlights for the next seven days</p>
+        </div>
+      </div>
+
+      <div class="highlights-main d-flex align-items-center gap-3">
+        <div class="highlight-content">
+          <h2>Chamber Business Awards: Celebrating our Regional Winners</h2>
+          <p class="mb-3">
+            <strong
+              >We are thrilled to announce the Regional Winners of the Chamber
+              Business Awards 2024!</strong
+            >
+          </p>
+          <p class="mb-3">
+            A huge congratulations to all the outstanding businesses recognised
+            for their excellence and innovation.
+            <strong>
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=236155C36421136E07488795E16D30B5&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+                class="text-decoration-none"
+                rel="noopener"
+                target="_blank"
+              >
+                Click here
+              </a>
+              to see the full list of Regional Winners.
+            </strong>
+          </p>
+          <p class="mb-0">
+            Don’t forget to follow BCC’s social media next week as we highlight
+            some of these regional success stories. We encourage you to amplify
+            these stories through your own platforms.
+          </p>
+          <div class="mt-3 find-out-more">
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=236155C36421136E07488795E16D30B5&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+              target="_blank"
+              class="text-decoration-none"
+            >
+              <span
+                class="d-inline-block text-center text-white rounded px-3 py-2"
+              >
+                <strong>Find out more</strong>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="highlight-image">
+          <img
+            src="images/1.png"
+            alt=""
+            class="img-fluid"
+            style="height: 330px"
+          />
+        </div>
+      </div>
+      <div
+        class="highlights-main d-flex align-items-center flex-row-reverse gap-3"
+        style="background-color: #fdeae7"
+      >
+        <div class="highlight-content">
+          <h2>Save the date - Global Annual Conference 2025</h2>
+          <p class="mb-3">
+            Join us on <strong>Thursday 26 June 2025</strong>, at the
+            <strong>QEII Centre, London</strong>, for a day packed with
+            thought-provoking discussions, inspiring keynote speakers, and
+            unparalleled networking opportunities.
+          </p>
+          <p class="mb-3">
+            <strong
+              >The host of the conference will be multi-award-winning journalist
+              Clive Myrie.</strong
+            >
+            Clive is one of the best known and most experienced foreign
+            correspondents and TV news presenters.
+          </p>
+          <p class="mb-0">
+            We can’t wait to welcome you and your members to what promises to be
+            our biggest and most dynamic conference yet. Be sure to spread the
+            word, mark your calendar and keep an eye out for further information
+            on our agenda and speakers.
+          </p>
+          <div class="mt-3 find-out-more">
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=236155C36421136E07488795E16D30B5&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+              target="_blank"
+              class="text-decoration-none"
+            >
+              <span
+                class="d-inline-block text-center text-white rounded px-3 py-2"
+              >
+                <strong>Find out more</strong>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="highlight-image">
+          <img
+            src="images/2.png"
+            alt=""
+            class="img-fluid"
+            style="height: 350px"
+          />
+        </div>
+      </div>
+      <div class="highlights-main d-flex align-items-center gap-3">
+        <div class="highlight-content">
+          <h2>Annual Report and Accounts 2023 - 2024</h2>
+          <p class="mb-3">
+            <strong
+              >A reminder to see and share the BCC Annual Report and Accounts
+              2023 - 2024 with your board and members.</strong
+            >
+          </p>
+          <p class="mb-3">
+            The report provides a great overview of the work and impact of the
+            BCC and the Chamber Network. It also gives greater detail and
+            transparency for our Members and Non-UK Members on how we are
+            governed.
+          </p>
+          <p class="mb-3">
+            Read the full report to take a deeper look at who we are, what we
+            do, and the people powering our engine. Please share with your team,
+            your board and your member businesses as relevant.
+          </p>
+          <p class="mb-0">
+            <strong
+              >The National Assembly meeting and the 2024 AGM are taking place
+              on Wednesday 16 October 2024 as virtual meetings. Full details
+              have been shared separately. Contact
+              <a
+                href="mailto:membership@britishchambers.org.uk"
+                title="membership@britishchambers.org.uk"
+                style="text-decoration: none; color: #d0103a"
+                rel="noopener"
+                target="_blank"
+              >
+                BCC membership team</a
+              >
+              with any queries.</strong
+            >
+          </p>
+          <div class="mt-3 find-out-more">
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=DF2003BEB7036B55DA93D7C5AEDA5C14&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+              target="_blank"
+              class="text-decoration-none"
+            >
+              <span
+                class="d-inline-block text-center text-white rounded px-3 py-2"
+              >
+                <strong>BCC Annual Report and Accounts 2023 - 2024</strong>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="highlight-image">
+          <img
+            src="images/3.png"
+            alt=""
+            class="img-fluid"
+            style="height: 400px"
+          />
+        </div>
+      </div>
+      <div class="global_britain">
+        <div class="head"><h2>GLOBAL BRITAIN</h2></div>
+        <div class="heading"><p>BCC Trade Update</p></div>
+        <div class="points">
+          <ul>
+            <li>
+              The BCC raised the issue of VAT challenges faced by UK exporters
+              to the EU in formal dialogues with senior UK and EU officials at
+              the Civil Society Forum meeting last Friday. Read the
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=557A73FCCE1D4DA00F50E090FE8D1C40&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                >Joint Statement
+              </a>
+              reached by business, labour and third sector stakeholders at the
+              meetings in Brussels.
+            </li>
+            <li>
+              UK trade negotiations with the six Gulf Co-operation Council
+              states resumed this week. Yesterday, the BCC met with officials
+              from the Department for Business and Trade (DBT) to discuss our
+              priorities for discussions on trade documents, services, business
+              mobility and removing non-tariff barriers to trade in goods.
+            </li>
+            <li>
+              The UK Prime Minister is due to meet the European Commission
+              President, Ursula von der Leyen, for discussions on UK-EU
+              relations next week. Earlier this week, the BCC discussed recent
+              policy developments in the UK and Brussels with the EU Mission in
+              London.
+            </li>
+            <li>
+              The BCC joined the new DBT SME Policy Insights Forum to consider
+              how trade deals can work to increase SME exports on their
+              implementation.
+            </li>
+            <li>
+              InvestHK visited the BCC offices this week to highlight Hong
+              Kong’s advantages as a strategic location for UK businesses
+              looking to invest. The discussions also covered the development of
+              the Northern Metropolis and broader opportunities within the
+              Greater Bay Area for business expansion.
+            </li>
+            <li>
+              On Tuesday, the Trade Remedies Authority (TRA) policy team spoke
+              with Chamber members at the BCC Trade Policy Committee meeting. As
+              well as providing insight into how Chambers can influence
+              decisions being made by the TRA on trade remedies, there was also
+              a discussion on the tariff rate quotas recently increased for
+              certain steel imports.
+            </li>
+            <li>
+              The TRA launched an enquiry this week into UK imports of
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=F4DA2646B35487ABB59AF7E1DD0A7F84&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                >tin mill products</a
+              >
+              from China which are often used in packaging. This was following
+              complaints from industry that these imports should face
+              anti-dumping duties.
+            </li>
+            <li>
+              DBT is holding
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=E270530A0DCD7FA3A0555CB7E24C8834&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                >webinars</a
+              >
+              during October on the new Product Regulation and Metrology Bill
+              and what it means for goods markings and conformity assessment.
+            </li>
+            <li>
+              UK Export Finance is hosting a Supplier Fair on
+              <span>Tuesday 22 October</span>
+              for the Sokodé - Benin Border Road project in Togo, in partnership
+              with Hitech Construction Africa. See further details
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=93D14FC53F421458860A2D96115EC1C1&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                >here.</a
+              >
+            </li>
+            <li>
+              The next virtual meeting of the BCC Trade Policy Committee will
+              take place on <span>Tuesday 22 October</span> at 14:00 (UK time).
+              In addition to the usual agenda items, guest speakers will discuss
+              trade and investment opportunities in the Gulf region. Contact
+              <a href="mailto:w.bain@britishchambers.org.uk" target="_blank"
+                >William Bain</a
+              >
+              for joining details.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="highlight-heading" style="background-color: #3caeef">
+        <h2><strong>PEOPLE AND WORK</strong></h2>
+      </div>
+      <div
+        class="highlights-main d-flex align-items-center gap-3"
+        style="background-color: #ebfcff"
+      >
+        <div class="highlight-content" style="padding-left: 10px">
+          <h2 style="color: #0ba1db">
+            Reforms to apprenticeship system in England
+          </h2>
+          <p class="mb-3">
+            <strong
+              >In his speech at the Labour Party Conference, the Prime Minister,
+              Keir Starmer MP, mentioned that the government had published plans
+              for
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=ACBD567906CD3B6E6B851435BB864298&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+                style="text-decoration: none; color: #3caeef"
+                rel="noopener"
+                target="_blank"
+                data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Mail/Click/224?a%3DACBD567906CD3B6E6B851435BB864298%26r%3D11AFDD539E79C86A54B36FB99132058C%26v%3D&amp;source=gmail&amp;ust=1735106464007000&amp;usg=AOvVaw1zb11fvpV9P14U1JJj-YEl"
+                style="color: #0ba1db"
+              >
+                reform of apprenticeships</a
+              >
+              in England.</strong
+            >
+          </p>
+          <p class="mb-3">
+            In response to the announcement, Alex Veitch, BCC Director of
+            Policy, said: <br /><br />
+            "Skills shortages continue to be a major concern for businesses and
+            a drag on economic growth."
+          </p>
+          <p class="mb-3">
+            "The proposed new Growth and Skills Levy was a key part of the
+            Government’s plans at the election. It’s welcome ministers have
+            acted early to give more details about skills reform."
+          </p>
+          <p class="mb-0">
+            “We’ve long argued that the current Apprenticeship Levy needs urgent
+            reform to make it more flexible. Businesses need a simple, coherent
+            and responsive system that properly incentivises employer investment
+            in training."
+          </p>
+          <div class="mt-3 find-out-more">
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=DF2003BEB7036B55DA93D7C5AEDA5C14&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+              target="_blank"
+              class="text-decoration-none"
+            >
+              <span
+                class="d-inline-block text-center text-white rounded px-3 py-2"
+                style="background-color: #0ba1db"
+              >
+                <strong>Find out more</strong>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="highlight-image">
+          <img
+            src="images/4.png"
+            alt=""
+            class="img-fluid"
+            style="height: 470px"
+          />
+        </div>
+      </div>
+      <div class="ucas_project">
+        <h2>UCAS’ Project Next Generation</h2>
+        <div class="content">
+          <p class="text">
+            How can employers improve apprenticeship take up and build a
+            successful early talent pipeline?
+          </p>
+          <p>
+            UCAS’ Project Next Generation research dives into how young people
+            make apprenticeships and early careers decisions. They have
+            identified six key themes impacting students and what this means for
+            employers hoping to attract and engage with potential apprentices.
+          </p>
+          <p>
+            The full report contains actionable insights for employers. See and
+            share with your member businesses to help them future-proof their
+            early careers recruitment strategy.
+          </p>
+        </div>
+        <a
+          href="https://response.gv-c.com/Mail/Click/224?a=2290922EDE9B8231A2FC76C6A3B52701&r=11AFDD539E79C86A54B36FB99132058C&v="
+          target="_blank"
+          >Read the report</a
+        >
+        <a
+          href="https://response.gv-c.com/Mail/Click/224?a=161B386A69155E4C93F3EB22737243D6&r=11AFDD539E79C86A54B36FB99132058C&v="
+          target="_blank"
+          >Find out more on how to recruit apprentices</a
+        >
+      </div>
+      <div class="highlight-heading" style="background-color: #8764ab">
+        <h2><strong>LOCAL ECONOMY OF THE FUTURE</strong></h2>
+      </div>
+      <div
+        class="highlights-main d-flex align-items-center flex-row-reverse gap-3"
+        style="background-color: #f2eff5"
+      >
+        <div class="highlight-content">
+          <h2 style="color: #8169b5">Reminder: Autumn Budget 2024</h2>
+          <p class="mb-3">
+            <strong
+              >Ahead of the Autumn Budget on Wednesday 30 October, the BCC team
+              has submitted our submission to HM Treasury.</strong
+            >
+          </p>
+          <p class="mb-3">
+            The submission outlines what we believe should be the priority areas
+            for the new government.
+          </p>
+          <p class="mb-0">
+            <span style="word-break: break-word; background-color: transparent"
+              >The full submission can be found below. If any Chambers would
+              like to discuss our budget asks, please contact the
+              <a
+                href="mailto:policy@britishchambers.org.uk"
+                title="policy@britishchambers.org.uk"
+                style="text-decoration: none; color: #8764ab"
+                rel="noopener"
+                target="_blank"
+              >
+                BCC policy team</a
+              >.</span
+            >
+          </p>
+          <div class="mt-3 find-out-more">
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=A7C19B1569430F87358B67872FCD6864&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+              target="_blank"
+              class="text-decoration-none"
+            >
+              <span
+                class="d-inline-block text-center text-white rounded px-3 py-2"
+                style="background-color: #8764ab"
+              >
+                <strong>Read the full submission</strong>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="highlight-image">
+          <img
+            src="images/5.jpg"
+            alt=""
+            class="img-fluid"
+            style="height: 250px"
+          />
+        </div>
+      </div>
+      <div class="find_more">
+        <h2>Find out more about UK Export Finance</h2>
+        <p>
+          UK Export Finance (UKEF) is the UK government’s export credit agency.
+          They help ensure that no viable UK export fails for a lack of finance
+          or insurance.
+        </p>
+        <ul>
+          <li>
+            <strong>Increase working capital:</strong> If a cash backed bond or
+            guarantee is required to support an export contract, UKEF can
+            provide a partial guarantee to your bank which will release the cash
+            back to your business and ease the strain on your working capital.
+          </li>
+          <li>
+            <strong>On the ground support:</strong> Our regional Export Finance
+            Managers can help guide you through the complexities of trade
+            finance and credit insurance. They can help you get a better
+            understanding of your specific export finance requirements and,
+            where possible, identify an appropriate solution to support your
+            export transactions.
+          </li>
+        </ul>
+        <div class="find_content">
+          <p>
+            Share with your members as relevant and
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=D2F643446C090B456B4244068C40F955&r=11AFDD539E79C86A54B36FB99132058C&v="
+              target="_blank"
+              style="color: #8766ab; text-decoration: none"
+              >contact UKEF</a
+            >
+            for more information. You can also find out more about UKEF as part
+            of the British Business Bank’s Finance Week.
+          </p>
+          <div>
+            <h3>WEBINAR</h3>
+            <p>
+              UKEF will be hosting a national webinar titled “How UK Export
+              Finance can help your business to export”. The event will take
+              place on <strong>Tuesday 1 October</strong> at 14:00 (UK time).
+            </p>
+          </div>
+
+          <p>
+            This session, scheduled under the Working Capital topic, will offer
+            valuable insights into UKEF’s services, with a Q&A session to
+            address any queries. This webinar is tailored to empower UK
+            exporters, especially SMEs, across all sectors. Please share with
+            your members as relevant.
+          </p>
+          <p>
+            <strong
+              >Please note that registration closes at 23:59 on Monday 30
+              September.
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=86FBBD1F22D6BFD3D35EC2BE06945BE8&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                style="color: #8766ab; text-decoration: none"
+                >Click here</a
+              >
+              to register.</strong
+            >
+          </p>
+        </div>
+      </div>
+      <div class="upcoming">
+        <div class="up_heading"><h2>UPCOMING EVENTS</h2></div>
+        <div class="upcoming_content">
+          <h3>UN Global Compact Network UK Annual Summit</h3>
+          <ul>
+            <li>Tuesday 1 October</li>
+            <li>London Guildhall and online</li>
+            <li>09:15 - 18:30 (UK time)</li>
+            <li>
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=A327E5EED5111A170B8782F072CE1164&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                >Register here</a
+              >
+            </li>
+          </ul>
+          <div class="up_text">
+            <p>
+              <strong>
+                The summit will feature panel discussions, fireside chats, and
+                hands-on practical workshops to bridge the 'ambition to action'
+                gap, and accelerate the delivery of sustainability commitments.
+                Anne-Marie Martin, Director of Membership UK and International
+                will be speaking at the event.</strong
+              >
+            </p>
+            <p>
+              The agenda features eight sessions to equip and empower business
+              professionals. This will provide robust solutions to the
+              challenges across environmental, social, and governance (ESG)
+              issues. It will convene corporate, government, and civil society
+              leaders for engaging discussions.
+            </p>
+            <p>
+              A communications toolkit is
+              <strong
+                ><a
+                  href="https://response.gv-c.com/Mail/Click/224?a=CACEF5E70B08DB447AF5EBBD14F3413A&r=11AFDD539E79C86A54B36FB99132058C&v="
+                  target="_blank"
+                  >available here</a
+                ></strong
+              >
+
+              for you to spread the word with your Chamber members.
+            </p>
+          </div>
+          <div class="call_to_action">
+            <a
+              href="https://response.gv-c.com/Mail/Click/224?a=A327E5EED5111A170B8782F072CE1164&r=11AFDD539E79C86A54B36FB99132058C&v="
+              target="_blank"
+              >Find out more</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="customs">
+        <h3>Customs Audit Masterclass</h3>
+        <div class="customs_content">
+          <p>
+            <strong
+              >This CPD-accredited masterclass will offer practical insights to
+              help businesses navigate customs audits smoothly.</strong
+            >
+          </p>
+          <p>
+            The ChamberCustoms team is committed to helping businesses navigate
+            the complexities of customs and trade regulations with confidence.
+            This masterclass is officially CPD-accredited, allowing participants
+            to earn Continuing Professional Development (CPD) points while
+            sharpening their skills and ensuring compliance.
+          </p>
+        </div>
+        <ul>
+          <li>
+            <i
+              ><a
+                href="https://response.gv-c.com/Mail/Click/224?a=D79F24051A8B4F45F7C4DDD582F9B48B&r=11AFDD539E79C86A54B36FB99132058C&v="
+                target="_blank"
+                style="color: #d0103a; text-decoration: none"
+                >Incoterms®: Customs Compliance Implications</a
+              ></i
+            >
+
+            – <strong>Monday 30 September</strong> at 11:00 (UK time)
+          </li>
+        </ul>
+        <div class="call_to_action">
+          <a
+            href="https://response.gv-c.com/Mail/Click/224?a=622B85DA24BEF1A9EA1377B02DB92E94&r=11AFDD539E79C86A54B36FB99132058C&v="
+            target="_blank"
+            >Find out more</a
+          >
+        </div>
+      </div>
+      <footer class="d-flex">
+        <div class="footer-left" style="width: 70%">
+          <ul class="d-flex gap-3">
+            <li>
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=D996693A6A61403E6CA603AE86C5B93C&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+                target="_blank"
+                data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Mail/Click/224?a%3DD996693A6A61403E6CA603AE86C5B93C%26r%3D11AFDD539E79C86A54B36FB99132058C%26v%3D&amp;source=gmail&amp;ust=1735106464008000&amp;usg=AOvVaw201IXaLXHCyEaAq1suR0Zr"
+                ><img
+                  src="https://ci3.googleusercontent.com/meips/ADKq_NaW7dq5wiEpToAqhJQcCPXgfFwqXswnFrdNbU_vCXyBKfMuwMkS5cINq59rdhPMlBLBKMCk8p3Jz1AqBv8Lr6Gy6oCNZHGiaL75DDZYAzhvEMZ0dtZw5N3BdtAJUsD6TQyVghSsUZKPO3LAnLlGd3Oitg=s0-d-e1-ft#https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/colored/twitter@2x.png"
+                  width="32"
+                  height="auto"
+                  alt="Twitter"
+                  title="Twitter"
+                  style="display: block; height: auto; border: 0"
+                  class="CToWUd"
+                  data-bit="iit"
+              /></a>
+            </li>
+            <li>
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=2A3C14D80E51B1B6707BDF658A19A99A&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+                target="_blank"
+                data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Mail/Click/224?a%3D2A3C14D80E51B1B6707BDF658A19A99A%26r%3D11AFDD539E79C86A54B36FB99132058C%26v%3D&amp;source=gmail&amp;ust=1735106464008000&amp;usg=AOvVaw0wYCtY9sxf1lVhpGufDAUc"
+                ><img
+                  src="https://ci3.googleusercontent.com/meips/ADKq_NYNchIo3RtLxPVoL62dvc2o-ud5ukFp9blZjZU5fVIr-4G21VatZ5CswKX2DW8G6OysI28o46FvvoLsUSo6B7yLx5xUNk5wNqqlUE2HWAlOLESQCFiPBQ7VaqJrEJVFbhD1ju7RtK9AlNEPIAYdYq5S1TE=s0-d-e1-ft#https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/colored/linkedin@2x.png"
+                  width="32"
+                  height="auto"
+                  alt="LinkedIn"
+                  title="LinkedIn"
+                  style="display: block; height: auto; border: 0"
+                  class="CToWUd"
+                  data-bit="iit"
+              /></a>
+            </li>
+            <li>
+              <a
+                href="https://response.gv-c.com/Mail/Click/224?a=36E78ACE049A0573947F272CA8FE0DAA&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+                target="_blank"
+                data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Mail/Click/224?a%3D36E78ACE049A0573947F272CA8FE0DAA%26r%3D11AFDD539E79C86A54B36FB99132058C%26v%3D&amp;source=gmail&amp;ust=1735106464008000&amp;usg=AOvVaw3ApYxXKY9dPvDxVb66wQwn"
+                ><img
+                  src="https://ci3.googleusercontent.com/meips/ADKq_NZ5kINxhNM17TsBtVvDqgmrdQRnFBE1Jy7YhDBruLYNbDJIpkfTr9Zsu8C3AhhhTNygLjvO_iklVw_RHE0aLQNeq2a5Fl8cYl475ARhokTI4IWO__pBg43bWV3UX_ZEd84dIb3QA2p3h9IVLkBMXfyC1aM=s0-d-e1-ft#https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/colored/facebook@2x.png"
+                  width="32"
+                  height="auto"
+                  alt="Facebook"
+                  title="Facebook"
+                  style="display: block; height: auto; border: 0"
+                  class="CToWUd"
+                  data-bit="iit"
+              /></a>
+            </li>
+            <li>
+              <a href="mailto:l.murphy@britishchambers.org.uk" target="_blank"
+                ><img
+                  src="https://ci3.googleusercontent.com/meips/ADKq_Naz1NIPfUl4TnuaxVuoDQxei53lkYI01cnvIQx9VMa6k9YWEfhLkBUqiSsPVCjpes0SBsiIkr6LmvzVBQiFEfLgvnTDW8HcQUMITuzgoVMxsFnkNyLgjrU6IMtd0lvdv6N5-KujOM0PT5Qbe1hdhw=s0-d-e1-ft#https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/colored/mail@2x.png"
+                  width="32"
+                  height="auto"
+                  alt=""
+                  title="Sign up to this newsletter"
+                  style="display: block; height: auto; border: 0"
+                  class="CToWUd"
+                  data-bit="iit"
+              /></a>
+            </li>
+          </ul>
+          <p>
+            Please share with your colleagues and let us know if other members
+            of your team would like to joining our mailing list.
+          </p>
+          <p class="py-1">
+            <span style="color: #ffffff"
+              ><a
+                href="https://response.gv-c.com/Prefs/Index/224?a=D68EEFC9EA6C16730CA5E756A8E2E93B&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;t=u"
+                style="text-decoration: none; color: #e01253"
+                rel="noopener"
+                target="_blank"
+                data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Prefs/Index/224?a%3DD68EEFC9EA6C16730CA5E756A8E2E93B%26r%3D11AFDD539E79C86A54B36FB99132058C%26t%3Du&amp;source=gmail&amp;ust=1735106464008000&amp;usg=AOvVaw22sqtNcEla5hMlRZ18DOQ5"
+                >Click here</a
+              >
+              to unsubscribe or
+              <a
+                href="https://response.gv-c.com/Prefs/Index/224?a=D68EEFC9EA6C16730CA5E756A8E2E93B&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;t=p"
+                style="text-decoration: none; color: #e01253"
+                rel="noopener"
+                target="_blank"
+                data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Prefs/Index/224?a%3DD68EEFC9EA6C16730CA5E756A8E2E93B%26r%3D11AFDD539E79C86A54B36FB99132058C%26t%3Dp&amp;source=gmail&amp;ust=1735106464008000&amp;usg=AOvVaw155pV5BsICStGioA0jSkyy"
+              >
+                click here</a
+              >
+              to manage your preferences.</span
+            >
+          </p>
+          <a
+            href="https://response.gv-c.com/Mail/Click/224?a=2BD4CBBCB3D114F18F4C2C8D85FFCC70&amp;r=11AFDD539E79C86A54B36FB99132058C&amp;v="
+            style="text-decoration: none; color: #e01253"
+            rel="noopener"
+            target="_blank"
+            data-saferedirecturl="https://www.google.com/url?q=https://response.gv-c.com/Mail/Click/224?a%3D2BD4CBBCB3D114F18F4C2C8D85FFCC70%26r%3D11AFDD539E79C86A54B36FB99132058C%26v%3D&amp;source=gmail&amp;ust=1735106464008000&amp;usg=AOvVaw3Li0iWLYzjW_VepUuMNR0i"
+            >www.britishchambers.org.uk</a
+          >
+        </div>
+        <div class="footer-right" style="width: 30%">
+          <img src="images/logo.png" alt="" class="img-fluid" />
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
