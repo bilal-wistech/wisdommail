@@ -53,14 +53,14 @@ if (!(extension_loaded('gd') && function_exists('gd_info'))) {
     echo "ERROR: PHP GD Library is required - ";
     $valid = false;
 }
-***/
+ ***/
 
 /*** not required for PHP CLI
 if (!extension_loaded('fileinfo')) {
     echo "ERROR: PHP Fileinfo extension is required - ";
     $valid = false;
 }
-***/
+ ***/
 
 if (!extension_loaded('curl')) {
     echo "ERROR: PHP CURL extension is required - ";
@@ -104,16 +104,43 @@ if (!$escapeshellarg_enabled) {
 }
 
 // check directory permission
-$dirs = [ 'storage/app', 'storage/framework', 'storage/logs', 'bootstrap/cache' ];
+// $dirs = [ 'storage/app', 'storage/framework', 'storage/logs', 'bootstrap/cache' ];
+// foreach ($dirs as $dir) {
+//     $basepath = pathinfo(__FILE__)['dirname'];
+//     $path = "$basepath/$dir";
+//     file_put_contents('/tmp/emo', $path);
+//     if (!(file_exists($path) && is_dir($path) && is_writable($path))) {
+//         echo "ERROR: The directory [{$dir}] must be writable by the web server.<br />";
+//         $valid = false;
+//     }
+// }
+$dirs = ['storage/app', 'storage/framework', 'storage/logs', 'bootstrap/cache'];
 foreach ($dirs as $dir) {
     $basepath = pathinfo(__FILE__)['dirname'];
     $path = "$basepath/$dir";
-    file_put_contents('/tmp/emo', $path);
+
+    // Define the path to the 'tmp' directory
+    $tempDir = "$basepath/tmp";
+
+    // Ensure the 'tmp' directory exists
+    if (!is_dir($tempDir)) {
+        mkdir($tempDir, 0777, true);  // Create the 'tmp' directory if it doesn't exist
+    }
+
+    // Define the temp file path
+    $tempPath = "$tempDir/emo";
+
+    // Write the path to a valid temporary location
+    file_put_contents($tempPath, $path);
+
+    // Check if directory is writable
     if (!(file_exists($path) && is_dir($path) && is_writable($path))) {
         echo "ERROR: The directory [{$dir}] must be writable by the web server.<br />";
         $valid = false;
     }
 }
+
+
 
 // just finish
 if ($valid) {
