@@ -29,7 +29,7 @@ class MailListController extends Controller
     public function index(Request $request)
     {
 
-        $apiResponse = Http::get('http://bccd.test/api/list-names');
+        $apiResponse = Http::get('https://britishchamberdubai.com/api/list-names');
         $apiData = json_decode($apiResponse->body(), true);
 
         $customer = $request->user()->customer;
@@ -94,7 +94,7 @@ class MailListController extends Controller
 
     public function testApiConnection()
     {
-        $apiResponse = Http::get('http://bccd.test/api/list-names');
+        $apiResponse = Http::get('https://britishchamberdubai.com/api/list-names');
         $apiData = json_decode($apiResponse->body(), true);
         dd($apiData);
     }
@@ -225,9 +225,7 @@ class MailListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.

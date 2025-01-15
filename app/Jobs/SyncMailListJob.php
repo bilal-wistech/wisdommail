@@ -20,7 +20,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 class SyncMailListJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-  /**
+    /**
      * The number of times the job may be attempted.
      *
      * @var int
@@ -44,7 +44,7 @@ class SyncMailListJob implements ShouldQueue
         try {
             Log::info('Starting mail lists synchronization...');
 
-            $apiResponse = Http::get('http://bccd.test/api/list-names');
+            $apiResponse = Http::get('https://britishchamberdubai.com/api/list-names');
             $apiData = json_decode($apiResponse->body(), true);
             //dd($apiData['Events List']);
             Log::info('API Data Retrieved', ['api_data' => $apiData]);
@@ -407,7 +407,6 @@ class SyncMailListJob implements ShouldQueue
                 throw $e; // This will trigger a retry based on the backoff setting
             }
         }
-
     }
     private function get_contact($data)
     {
@@ -438,7 +437,7 @@ class SyncMailListJob implements ShouldQueue
         // Return the contact's ID
         return $contact->id;
     }
-     /**
+    /**
      * Handle a job failure.
      *
      * @param  \Throwable  $exception

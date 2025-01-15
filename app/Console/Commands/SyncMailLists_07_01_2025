@@ -44,7 +44,7 @@ class SyncMailLists extends Command
      */
     public function handle()
     {
-        // $apiResponse = Http::get('http://bccd.test/api/list-names');
+        // $apiResponse = Http::get('https://britishchamberdubai.com/api/list-names');
         $apiResponse = Http::get('https://britishchamberdubai.com/api/list-names');
         $apiData = json_decode($apiResponse->body(), true);
         //dd($apiData['Events List']);
