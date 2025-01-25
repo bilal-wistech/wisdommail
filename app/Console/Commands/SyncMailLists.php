@@ -329,13 +329,16 @@ class SyncMailLists extends Command
             'subscription_start_date' => $data['subscription_start_date'],
             'subscription_end_date' => $data['subscription_end_date'],
             'jobrole' => $data['jobrole_title'],
-            'activated' => $data['activated'],
-            'is_active' => $data['is_active'],
+            'activated' => $data['activated'] == '1' ? 'Active' : 'Inactive',
+            'is_active' => $data['is_active'] == '1' ? 'Active' : 'Inactive',
             'created_by' => $data['created_by_name'],
             'date_of_birth' => $data['date_of_birth'],
             'vat_number' => $data['vat_number'],
             'sector__industries' => $data['sector__industries'],
             'account_type' => $data['account_type'],
+            'membership_type' => $data['memb_type'] == 1 ? 'Individual' : 
+              ($data['memb_type'] == 2 ? 'Business' : 
+              ($data['memb_type'] == 3 ? 'Business Advance' : 'N/A')),
         ];
     }
 
