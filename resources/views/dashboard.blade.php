@@ -13,7 +13,11 @@
     @if (config('custom.japan') && !empty(trans('messages.dashboard.notice')))
         <h1>{!! trans('messages.dashboard.notice') !!}</h1>
     @endif
-    <h2 class="mt-4 pt-2">{!! trans('messages.frontend_dashboard_hello', ['name' => Auth::user()->customer->displayName()]) !!}</h2>
+    @if(Auth::user()->id == 1)
+        <h2 class="mt-4 pt-2">{!! trans('messages.frontend_dashboard_hello', ['name' => Auth::user()->customer->displayName()]) !!}</h2>
+    @else
+        <h2 class="mt-4 pt-2">{!! trans('messages.frontend_dashboard_hello', ['name' => Auth::user()->first_name.' '.Auth::user()->last_name]) !!}</h2>
+    @endif
     <p>{!! trans('messages.frontend_dashboard_welcome') !!}</p>
 
     {{-- <h3 class="mt-5 mb-3">
@@ -81,25 +85,26 @@
         <ul class="nav nav-tabs nav-underline" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="campaign_opens-tab" data-bs-toggle="tab" data-bs-target="#campaign_opens"
-                    role="button" role="tab" aria-controls="campaign_opens" aria-selected="true">
+                   role="button" role="tab" aria-controls="campaign_opens" aria-selected="true">
                     {{ trans('messages.campaign_opens') }}
                 </a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="campaign_clicks-tab" data-bs-toggle="tab" data-bs-target="#campaign_clicks"
-                    role="button" role="tab" aria-controls="campaign_clicks" aria-selected="false">
+                   role="button" role="tab" aria-controls="campaign_clicks" aria-selected="false">
                     {{ trans('messages.campaign_clicks') }}
                 </a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="clicked_links-tab" data-bs-toggle="tab" data-bs-target="#clicked_links"
-                    role="button" role="tab" aria-controls="clicked_links" aria-selected="false">
+                   role="button" role="tab" aria-controls="clicked_links" aria-selected="false">
                     {{ trans('messages.clicked_links') }}
                 </a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="campaign_opens" role="tabpanel" aria-labelledby="campaign_opens-tab">
+            <div class="tab-pane fade show active" id="campaign_opens" role="tabpanel"
+                 aria-labelledby="campaign_opens-tab">
                 <ul class="modern-listing mt-0 top-border-none">
                     @forelse (Acelle\Model\Campaign::topOpens(5, Auth::user()->customer)->get() as $num => $item)
                         <li>
@@ -273,21 +278,22 @@
                         <div class="d-flex mb-3">
                             <div class="me-3">
                                 <a href="{{ action('AccountController@profile') }}"><img width="50px"
-                                        class="rounded-circle shadow-sm"
-                                        src="{{ $log->customer->user->getProfileImageUrl() }}" alt=""></a>
+                                                                                         class="rounded-circle shadow-sm"
+                                                                                         src="{{ $log->customer->user->getProfileImageUrl() }}"
+                                                                                         alt=""></a>
                             </div>
 
                             <div class="card px-0 shadow-sm container-fluid">
                                 <div class="card-body pt-2">
                                     <div class="d-flex align-items-center pt-1">
                                         <label
-                                            class="panel-title text-semibold my-0 fw-600">{{ $log->customer->displayName() }}</label>
+                                                class="panel-title text-semibold my-0 fw-600">{{ $log->customer->displayName() }}</label>
                                         <div class="d-flex align-items-center ms-auto text-muted">
                                             <span style="font-size: 18px"
-                                                class="material-symbols-rounded ms-auto me-2">history</span>
+                                                  class="material-symbols-rounded ms-auto me-2">history</span>
                                             <div class="">
                                                 <span class="heading-text"><i
-                                                        class="icon-history position-left text-success"></i>
+                                                            class="icon-history position-left text-success"></i>
                                                     {{ $log->created_at->timezone($currentTimezone)->diffForHumans() }}</span>
                                             </div>
                                         </div>
