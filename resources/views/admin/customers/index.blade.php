@@ -45,13 +45,13 @@
                     </div>
                 @endif
             </div>
-            {{-- @can('create', new Acelle\Model\Customer())
+             @can('create', new Acelle\Model\Customer())
                 <div class="text-end">
                     <a href="{{ action("Admin\CustomerController@create") }}" role="button" class="btn btn-secondary">
                         <span class="material-symbols-rounded">add</span> {{ trans('messages.create_customer') }}
                     </a>
                 </div>
-            @endcan --}}
+            @endcan
         </div>
 
         <div class="pml-table-container"></div>
