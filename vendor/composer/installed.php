@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'fdba47e6cb697014dd86056626826e5712e07074',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -703,9 +703,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'fdba47e6cb697014dd86056626826e5712e07074',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -728,15 +728,6 @@
             'install_path' => __DIR__ . '/../laravel/socialite',
             'aliases' => array(),
             'dev_requirement' => false,
-        ),
-        'laravel/telescope' => array(
-            'pretty_version' => 'v5.2.6',
-            'version' => '5.2.6.0',
-            'reference' => '7ee46fbea8e3b01108575c8edf7377abddfe8bb9',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/telescope',
-            'aliases' => array(),
-            'dev_requirement' => true,
         ),
         'laravel/tinker' => array(
             'pretty_version' => 'v2.10.0',

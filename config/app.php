@@ -227,7 +227,7 @@ return [
         Acelle\Providers\AuthServiceProvider::class,
         Acelle\Providers\EventServiceProvider::class,
         Acelle\Providers\RouteServiceProvider::class,
-        Acelle\Providers\TelescopeServiceProvider::class,
+        // Acelle\Providers\TelescopeServiceProvider::class,
         Acelle\Providers\JobServiceProvider::class,
 
         /*
